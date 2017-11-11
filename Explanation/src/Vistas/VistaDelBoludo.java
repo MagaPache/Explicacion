@@ -7,6 +7,7 @@ package Vistas;
 
 import Model.GestorProducto;
 import Model.GestorTipo;
+import Model.Producto;
 import Model.TipoProducto;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -68,6 +69,11 @@ public class VistaDelBoludo extends javax.swing.JFrame {
         });
 
         btnConsulta.setText("Consultar");
+        btnConsulta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -139,11 +145,21 @@ public class VistaDelBoludo extends javax.swing.JFrame {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         GestorProducto gp = new GestorProducto();
         if (valido()) {
-
-        } else {
-            JOptionPane.showMessageDialog(null, "Whatever");
+            Producto p = new Producto();
+            p.setCodigoProducto(Integer.parseInt(txtCodigo.getText()));
+            p.setNombre(txtNombre.getText());
+            p.setPrecio(Double.parseDouble(txtPrecio.getText()));
+            p.setTipoProducto(((TipoProducto)cmbTipo.getSelectedItem()).getCodigoTipo());
+            p.setDevolucion(chkDevolucion.isSelected());
+            gp.agregarProducto(p);
+            JOptionPane.showMessageDialog(null, "Se ha insertado un nuevo registro");
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaActionPerformed
+        VistaDelSalame ventana = new VistaDelSalame();
+        ventana.setVisible(true);
+    }//GEN-LAST:event_btnConsultaActionPerformed
 
     /**
      * @param args the command line arguments

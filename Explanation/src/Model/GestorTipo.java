@@ -35,6 +35,9 @@ public class GestorTipo {
                 tp.setTipo(rs.getString("tipo"));
                 lista.add(tp);
             }
+            rs.close();
+            stmt.close();
+            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(GestorTipo.class.getName()).log(Level.SEVERE, null, ex);
         }
