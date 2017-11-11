@@ -15,7 +15,7 @@ public class TipoProducto {
 
     public String getTipo() {
         return tipo;
-    }
+    }    
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
@@ -29,6 +29,10 @@ public class TipoProducto {
         this.tipo = tipo;
     }
     
+    @Override
+    public String toString() {
+        return tipo;
+    }    
     
     
 }

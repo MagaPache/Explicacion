@@ -5,6 +5,12 @@
  */
 package Vistas;
 
+import Model.GestorProducto;
+import Model.GestorTipo;
+import Model.TipoProducto;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Usuario
@@ -14,8 +20,10 @@ public class VistaDelBoludo extends javax.swing.JFrame {
     /**
      * Creates new form VistaDelBoludo
      */
+    
     public VistaDelBoludo() {
         initComponents();
+        cargarComboTipo();
     }
 
     /**
@@ -31,7 +39,6 @@ public class VistaDelBoludo extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
         txtNombre = new javax.swing.JTextField();
         txtPrecio = new javax.swing.JTextField();
@@ -44,19 +51,22 @@ public class VistaDelBoludo extends javax.swing.JFrame {
 
         jLabel1.setText("Codigo");
 
-        jLabel2.setText("jLabel1");
+        jLabel2.setText("Nombre");
 
-        jLabel3.setText("jLabel1");
+        jLabel3.setText("Precio");
 
-        jLabel4.setText("jLabel1");
-
-        jLabel5.setText("jLabel1");
+        jLabel4.setText("Tipo");
 
         cmbTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
 
         chkDevolucion.setText("Acepta Devolución");
 
         btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         btnConsulta.setText("Consultar");
 
@@ -86,8 +96,7 @@ public class VistaDelBoludo extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(cmbTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(18, 18, 18)
+                                .addGap(52, 52, 52)
                                 .addComponent(chkDevolucion)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
@@ -117,9 +126,7 @@ public class VistaDelBoludo extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(cmbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(chkDevolucion))
+                .addComponent(chkDevolucion)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardar)
@@ -129,6 +136,15 @@ public class VistaDelBoludo extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        GestorProducto gp = new GestorProducto();
+        if(valido()){
+            
+        }else{
+            JOptionPane.showInputDialog(gp)
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -174,9 +190,18 @@ public class VistaDelBoludo extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtPrecio;
     // End of variables declaration//GEN-END:variables
+
+    private void cargarComboTipo() {
+        
+        GestorTipo gt = new GestorTipo();
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        for (TipoProducto obtenerTodosTipo : gt.obtenerTodosTipos()) {
+            model.addElement(obtenerTodosTipo);
+        }
+        cmbTipo.setModel(model);
+    }
 }
