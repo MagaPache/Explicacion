@@ -20,7 +20,6 @@ public class VistaDelBoludo extends javax.swing.JFrame {
     /**
      * Creates new form VistaDelBoludo
      */
-    
     public VistaDelBoludo() {
         initComponents();
         cargarComboTipo();
@@ -139,10 +138,10 @@ public class VistaDelBoludo extends javax.swing.JFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         GestorProducto gp = new GestorProducto();
-        if(valido()){
-            
-        }else{
-            JOptionPane.showInputDialog(gp)
+        if (valido()) {
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Whatever");
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -196,12 +195,49 @@ public class VistaDelBoludo extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void cargarComboTipo() {
-        
+
         GestorTipo gt = new GestorTipo();
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         for (TipoProducto obtenerTodosTipo : gt.obtenerTodosTipos()) {
             model.addElement(obtenerTodosTipo);
         }
         cmbTipo.setModel(model);
+    }
+
+    private boolean valido() {
+
+        if (txtCodigo.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "El campo código no puede estar vacío");
+            return false;
+        }
+        if (txtNombre.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "El campo nombre no puede estar vacío");
+            return false;
+        }
+        if (txtPrecio.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "El campo precio no puede estar vacío");
+            return false;
+        }
+        if (cmbTipo.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar algo");
+            return false;
+        }
+        try {
+            Integer.parseInt(txtCodigo.getText());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Como te vas a equivocar boludo!!!");
+            return false;
+        }
+        try {
+            Double.parseDouble(txtPrecio.getText());
+            if (Double.parseDouble(txtPrecio.getText()) < 0) {
+                JOptionPane.showMessageDialog(null, "El campo precio debe ser un número positivo");
+                return false;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Como te vas a equivocar boludasoo!!!");
+            return false;
+        }
+        return true;
     }
 }
