@@ -9,6 +9,7 @@ import Model.GestorProducto;
 import Model.GestorTipo;
 import Model.Producto;
 import Model.TipoProducto;
+import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
@@ -21,9 +22,35 @@ public class VistaDelBoludo extends javax.swing.JFrame {
     /**
      * Creates new form VistaDelBoludo
      */
+    int y = -1;
+    GestorProducto gp = new GestorProducto();
+    GestorTipo gt = new GestorTipo();
+
     public VistaDelBoludo() {
         initComponents();
         cargarComboTipo();
+    }
+
+    VistaDelBoludo(int x) {
+
+        initComponents();
+        cargarComboTipo();
+        y = x;
+        gp = new GestorProducto();
+        Producto p = gp.obtenerProducto(y);
+        txtCodigo.setText("" + p.getCodigoProducto());
+        txtNombre.setText("" + p.getNombre());
+        txtPrecio.setText("" + p.getPrecio());
+        TipoProducto tp = new TipoProducto();
+        gt = new GestorTipo();
+        ArrayList<TipoProducto> tipos = gt.obtenerTodosTipos();
+        for (TipoProducto tipo : tipos) {
+            if (tipo.getCodigoTipo() == p.getTipoProducto()) {
+                cmbTipo.setSelectedIndex(tipos.indexOf(tipo));
+            }
+        }
+        chkDevolucion.setSelected(p.isDevolucion());
+
     }
 
     /**
@@ -143,16 +170,22 @@ public class VistaDelBoludo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        GestorProducto gp = new GestorProducto();
         if (valido()) {
             Producto p = new Producto();
             p.setCodigoProducto(Integer.parseInt(txtCodigo.getText()));
             p.setNombre(txtNombre.getText());
             p.setPrecio(Double.parseDouble(txtPrecio.getText()));
-            p.setTipoProducto(((TipoProducto)cmbTipo.getSelectedItem()).getCodigoTipo());
+            p.setTipoProducto(((TipoProducto) cmbTipo.getSelectedItem()).getCodigoTipo());
             p.setDevolucion(chkDevolucion.isSelected());
-            gp.agregarProducto(p);
-            JOptionPane.showMessageDialog(null, "Se ha insertado un nuevo registro");
+            if (y == -1) {
+                gp = new GestorProducto();
+                gp.agregarProducto(p);
+                JOptionPane.showMessageDialog(null, "Se ha insertado un nuevo registro");
+            } else {
+                gp = new GestorProducto();
+                gp.modificarProducto(p);
+                JOptionPane.showMessageDialog(null, "Se ha modificado el registro correctamente");
+            }
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -211,8 +244,7 @@ public class VistaDelBoludo extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void cargarComboTipo() {
-
-        GestorTipo gt = new GestorTipo();
+        gt = new GestorTipo();
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         for (TipoProducto obtenerTodosTipo : gt.obtenerTodosTipos()) {
             model.addElement(obtenerTodosTipo);

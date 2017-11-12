@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GestorProducto {
+
     public Connection conn;
 
     public GestorProducto() {
@@ -22,7 +23,7 @@ public class GestorProducto {
     }
 
     public void agregarProducto(Producto p) {
-        
+
         try {
             PreparedStatement stmt = conn.prepareStatement("insert into Productos values (?, ?, ?, ?, ?)");
             stmt.setInt(1, p.getCodigoProducto());
@@ -39,19 +40,19 @@ public class GestorProducto {
     }
 
     public ArrayList<vmProducto> obtenerProductos() {
-        
+
         ArrayList<vmProducto> lista = new ArrayList<vmProducto>();
         try {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("select codigo, nombre, precio, tipo, devolucion from Productos p join Tipos t on p.codigoTipo = t.codigoTipo");
-            while(rs.next()){
+            while (rs.next()) {
                 vmProducto p = new vmProducto();
                 p.setCodigoProducto(rs.getInt("codigo"));
                 p.setNombre(rs.getString("nombre"));
                 p.setPrecio(rs.getDouble("precio"));
                 p.setTipoProducto(rs.getString("tipo"));
                 p.setDevolucion(rs.getBoolean("devolucion"));
-                lista.add(p);                
+                lista.add(p);
             }
             rs.close();
             stmt.close();
@@ -59,10 +60,50 @@ public class GestorProducto {
         } catch (SQLException ex) {
             Logger.getLogger(GestorProducto.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return lista;
-        
+
     }
-    
-    
+
+    public void modificarProducto(Producto p) {
+
+        try {
+            PreparedStatement stmt = conn.prepareStatement("update Productos set nombre = ?, precio = ?, codigoTipo = ?, devolucion = ? where codigo = ?");
+            stmt.setInt(5, p.getCodigoProducto());
+            stmt.setString(1, p.getNombre());
+            stmt.setDouble(2, p.getPrecio());
+            stmt.setInt(3, p.getTipoProducto());
+            stmt.setBoolean(4, p.isDevolucion());
+            stmt.executeUpdate();
+            stmt.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(GestorProducto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public Producto obtenerProducto(int y) {
+
+        Producto p = new Producto();
+        try {
+            PreparedStatement stmt = conn.prepareStatement("select * from Productos where codigo = ?");
+            stmt.setInt(1, y);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                p.setCodigoProducto(rs.getInt("codigo"));
+                p.setNombre(rs.getString("nombre"));
+                p.setPrecio(rs.getDouble("precio"));
+                p.setTipoProducto(rs.getInt("codigoTipo"));
+                p.setDevolucion(rs.getBoolean("devolucion"));
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(GestorProducto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return p;
+    }
+
 }
